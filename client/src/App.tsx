@@ -6,6 +6,9 @@ function App() {
 
   function handleInput(e: React.FormEvent) {
     e.preventDefault();
+    fetch('http:localhost:5000', {
+      method: 'GET'
+    })
   }
 
   return <div className="App">

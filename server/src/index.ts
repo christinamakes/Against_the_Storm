@@ -1,9 +1,11 @@
 import 'dotenv/config'
 import express, { Request, Response } from "express";
 import { createClient } from "@supabase/supabase-js"
-import { Database } from './supabase'
+import { Database } from "./supabase"
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 const supabaseUrl = 'https://wnbtubmfobgomfgfjikb.supabase.co';
