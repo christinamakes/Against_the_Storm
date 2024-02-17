@@ -1,13 +1,23 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
+  const [title, setTitle] = useState('');
+
+  function handleInput(e: React.FormEvent) {
+    e.preventDefault();
+  }
+
   return <div className="App">
-    <form>
-      <label>Hello</label>
-      <input />
+    <form onSubmit={handleInput}>
+      <label htmlFor='title'>Hello</label>
+      <input id='title'
+        value={title}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setTitle(e.target.value)
+        }}
+      />
+      <button>Submit</button>
     </form>
   </div>
 }
