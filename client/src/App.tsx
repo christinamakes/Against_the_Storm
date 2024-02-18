@@ -14,11 +14,12 @@ function App() {
     new Array(resources.length).fill(false)
   );
 
-  const handleCheck = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleOnCheck = (pos: number) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === pos ? !item : item
+    )
+    setCheckedState(updatedCheckedState)
   };
-
-  // setCheckedState()
 
   // run when mount
   useEffect(() => {
@@ -43,7 +44,7 @@ function App() {
               key={resource.resource_id}
               value={resource.name}
               checked={checkedState[index]}
-              onChange={handleCheck}
+              onChange={() => handleOnCheck(index)}
             />
             <label htmlFor={`custom-checkbox-${index}`}>{resource.name}</label>
           </li>
