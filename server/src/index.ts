@@ -6,6 +6,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors());
+app.use(express.json())
 const PORT = process.env.PORT || 3000;
 
 const supabaseUrl = 'https://wnbtubmfobgomfgfjikb.supabase.co';
@@ -22,7 +23,6 @@ app.get('/', async (req: Request, res: Response) => {
         if (error) {
             throw error;
         }
-
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });

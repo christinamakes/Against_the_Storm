@@ -1,27 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
-function App() {
-  const [title, setTitle] = useState('');
+type TResouce = {
+  resource_id: string
+  name: string,
+  description: string,
+  is_food: boolean
+}
 
-  function handleInput(e: React.FormEvent) {
-    e.preventDefault();
-    fetch('http:localhost:5000', {
-      method: 'GET'
-    })
-  }
+function App() {
+  const [resources, setResources] = useState<TResouce[]>([]);
+
+  // run when mount
+  useEffect(() => {
+    async function fetchResources() {
+      const newResources = await fetch('http://localhost:5000/')
+        .then(response => response.json());
+      setResources(newResources);
+    }
+    fetchResources();
+  }, []);
 
   return <div className="App">
-    <form onSubmit={handleInput}>
-      <label htmlFor='title'>Hello</label>
-      <input id='title'
-        value={title}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setTitle(e.target.value)
-        }}
-      />
-      <button>Submit</button>
-    </form>
+    <ul className="resources">
+      {resources.map((resource) => (
+        <li key={resource.resource_id}>{resource.name}</li>
+      ))}
+    </ul>
   </div>
 }
 
