@@ -10,6 +10,15 @@ type TResouce = {
 
 function App() {
   const [resources, setResources] = useState<TResouce[]>([]);
+  const [checkedState, setCheckedState] = useState(
+    new Array(resources.length).fill(false)
+  );
+
+  const handleCheck = (e: React.FormEvent) => {
+    e.preventDefault()
+  };
+
+  // setCheckedState()
 
   // run when mount
   useEffect(() => {
@@ -22,10 +31,25 @@ function App() {
   }, []);
 
   return <div className="App">
-    <ul className="resources">
-      {resources.map((resource) => (
-        <li key={resource.resource_id}>{resource.name}</li>
-      ))}
+    <h3>Select resources</h3>
+    <ul className="resources-list">
+      {resources.map((resource, index) => {
+        return (
+          <li key={index}>
+            <input
+              type='checkbox'
+              id={`resource-checkbox-${index}`}
+              name={resource.name}
+              key={resource.resource_id}
+              value={resource.name}
+              checked={checkedState[index]}
+              onChange={handleCheck}
+            />
+            <label htmlFor={`custom-checkbox-${index}`}>{resource.name}</label>
+          </li>
+        )
+      })
+      }
     </ul>
   </div>
 }
