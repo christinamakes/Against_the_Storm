@@ -8,35 +8,52 @@ type TResouce = {
   is_food: boolean
 }
 
+type TProduct = {
+  product_id: string,
+  name: string
+}
+
 function App() {
   const [resources, setResources] = useState<TResouce[]>([]);
+  const [products, setProducts] = useState<TProduct[]>([]);
+  // checkboxes handled via state obj e.g., {'Wood': false, 'Stone': true}
   const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
 
+
+  // on interaction with checkbox negate its current state and update 'checkboxes'
   const handleOnCheck = (e: React.FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     const isChecked = checkboxes[value];
-    console.log(`${value} ${isChecked}`)
 
     setCheckboxes(prevState => ({
       ...prevState,
       [value]: !isChecked
     }))
+    // update products based on resource selection
+    // updateCheckboxSelection()
   };
 
-
-  // run when mount
+  // GET all resources when mount
   useEffect(() => {
+    async function fetchProducts() {
+      const newProducts = await fetch('http://localhost:5000/products')
+        .then(response => response.json());
+      setProducts(newProducts);
+    }
+
     async function fetchResources() {
-      const newResources = await fetch('http://localhost:5000/')
+      const newResources = await fetch('http://localhost:5000/resources')
         .then(response => response.json());
       setResources(newResources);
     }
+    fetchProducts();
     fetchResources();
   }, []);
 
   return <div className="App">
     <h3>Select resources</h3>
     <ul className="resources-list">
+      {/* create all resource checkboxes */}
       {resources.map((resource, index) => {
         return (
           <li key={index}>

@@ -14,7 +14,22 @@ const supabaseKey = process.env.SUPABASE_KEY!;
 const supabase = createClient<Database>(
     supabaseUrl, supabaseKey);
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/resources', async (req: Request, res: Response) => {
+    try {
+        const { data, error } = await supabase
+            .from('resources')
+            .select('*');
+
+        if (error) {
+            throw error;
+        }
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/products', async (req: Request, res: Response) => {
     try {
         const { data, error } = await supabase
             .from('resources')
