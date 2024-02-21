@@ -62,8 +62,8 @@ function App() {
               id={resource.raw_resource_id}
               name={resource.name}
               key={resource.raw_resource_id}
-              value={resource.name}
-              checked={checkboxes[resource.name] || false}
+              value={resource.raw_resource_id}
+              checked={checkboxes[resource.raw_resource_id] || false}
               onChange={handleOnCheck}
             />
             <label htmlFor={resource.raw_resource_id}>{resource.name}</label>
