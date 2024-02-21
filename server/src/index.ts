@@ -44,6 +44,21 @@ app.get('/products', async (req: Request, res: Response) => {
     }
 });
 
+app.get('/mapping', async (req: Request, res: Response) => {
+    try {
+        const { data, error } = await supabase
+            .from('raw_refined_mapping')
+            .select('*');
+
+        if (error) {
+            throw error;
+        }
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 // beam me up, scotty
 app.listen(PORT, () => {
     console.log(`hi from http://localhost:${PORT}`);

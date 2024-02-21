@@ -13,11 +13,18 @@ type TProduct = {
   name: string
 }
 
+type TMapping = {
+  raw_resource_id: string,
+  refined_resource_id: string,
+  quantity_required: string
+}
+
 function App() {
   const [resources, setResources] = useState<TResouce[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
   // checkboxes handled via state obj e.g., {1: false, 2: true}
   const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
+  const [mappingData, setMappingData] = useState<TMapping[]>([]);
 
 
   // on interaction with checkbox negate its current state and update 'checkboxes'
@@ -46,8 +53,15 @@ function App() {
         .then(response => response.json());
       setResources(newResources);
     }
+
+    async function fetchMapping() {
+      const newMapping = await fetch('http://localhost:5000/mapping')
+        .then(response => response.json());
+      setMappingData(newMapping)
+    }
     fetchProducts();
     fetchResources();
+    fetchMapping();
   }, []);
 
   return <div className="App">
