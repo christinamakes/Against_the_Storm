@@ -2,21 +2,21 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 type TResouce = {
-  resource_id: string
+  raw_resource_id: string
   name: string,
   description: string,
   is_food: boolean
 }
 
 type TProduct = {
-  product_id: string,
+  refined_resource_id: string,
   name: string
 }
 
 function App() {
   const [resources, setResources] = useState<TResouce[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
-  // checkboxes handled via state obj e.g., {'Wood': false, 'Stone': true}
+  // checkboxes handled via state obj e.g., {1: false, 2: true}
   const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
 
 
@@ -24,7 +24,7 @@ function App() {
   const handleOnCheck = (e: React.FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     const isChecked = checkboxes[value];
-
+    console.log(value)
     setCheckboxes(prevState => ({
       ...prevState,
       [value]: !isChecked
@@ -54,24 +54,33 @@ function App() {
     <h3>Select resources</h3>
     <ul className="resources-list">
       {/* create all resource checkboxes */}
-      {resources.map((resource, index) => {
+      {resources.map((resource) => {
         return (
-          <li key={index}>
+          <li key={resource.raw_resource_id}>
             <input
               type='checkbox'
-              id={`resource-checkbox-${index}`}
+              id={resource.raw_resource_id}
               name={resource.name}
-              key={resource.resource_id}
+              key={resource.raw_resource_id}
               value={resource.name}
               checked={checkboxes[resource.name] || false}
               onChange={handleOnCheck}
             />
-            <label htmlFor={`resource-checkbox-${index}`}>{resource.name}</label>
+            <label htmlFor={resource.raw_resource_id}>{resource.name}</label>
           </li>
         )
       })
       }
     </ul>
+    <div className='refined-resources'>
+      <ul className='refined-resources-list'>
+        {products.map((product) => {
+          return (
+            <li key={product.refined_resource_id}>{product.name}</li>
+          )
+        })}
+      </ul>
+    </div>
   </div>
 }
 

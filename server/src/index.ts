@@ -17,7 +17,7 @@ const supabase = createClient<Database>(
 app.get('/resources', async (req: Request, res: Response) => {
     try {
         const { data, error } = await supabase
-            .from('resources')
+            .from('raw_resources')
             .select('*');
 
         if (error) {
@@ -32,7 +32,7 @@ app.get('/resources', async (req: Request, res: Response) => {
 app.get('/products', async (req: Request, res: Response) => {
     try {
         const { data, error } = await supabase
-            .from('resources')
+            .from('refined_resources')
             .select('*');
 
         if (error) {
