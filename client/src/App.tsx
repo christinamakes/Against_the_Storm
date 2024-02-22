@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, createContext, useContext } from 'react'
 import './App.css'
 
 type TResouce = {
@@ -19,12 +19,36 @@ type TMapping = {
   quantity_required: string
 }
 
+// create context for mapping data
+const MappingContext = createContext<TMapping[]>([]);
+
+// create provider
+const MappingProvider: React.FC = ({ children }) => {
+  const [mappingData, setMappingData] = useState<TMapping[]>([]);
+
+  // fetch mapping on mount; FC = functional component
+  useEffect(() => {
+    async function fetchMapping() {
+      const newMapping = await fetch('http://localhost:5000/mapping')
+        .then(response => response.json());
+      setMappingData(newMapping)
+    }
+
+    fetchMapping();
+  }, []);
+  return <MappingContext.Provider value={mappingData}>{children}</MappingContext.Provider>
+};
+
+
+
 function App() {
   const [resources, setResources] = useState<TResouce[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
   // checkboxes handled via state obj e.g., {1: false, 2: true}
   const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
-  const [mappingData, setMappingData] = useState<TMapping[]>([]);
+
+  // use mappingContext hook
+  const mappingData = useContext(MappingContext);
 
 
   // on interaction with checkbox negate its current state and update 'checkboxes'
@@ -54,14 +78,8 @@ function App() {
       setResources(newResources);
     }
 
-    async function fetchMapping() {
-      const newMapping = await fetch('http://localhost:5000/mapping')
-        .then(response => response.json());
-      setMappingData(newMapping)
-    }
     fetchProducts();
     fetchResources();
-    fetchMapping();
   }, []);
 
   return <div className="App">
@@ -98,4 +116,10 @@ function App() {
   </div>
 }
 
-export default App
+export default function WrappedApp() {
+  return (
+    // <MappingProvider>
+    <App />
+    // </MappingProvider>
+  )
+}
