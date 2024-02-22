@@ -22,11 +22,11 @@ type TMapping = {
 // create context for mapping data
 const MappingContext = createContext<TMapping[]>([]);
 
-// create provider
+// create provider; React.FC = functional component
 const MappingProvider: React.FC = ({ children }) => {
   const [mappingData, setMappingData] = useState<TMapping[]>([]);
 
-  // fetch mapping on mount; FC = functional component
+  // fetch mapping on mount
   useEffect(() => {
     async function fetchMapping() {
       const newMapping = await fetch('http://localhost:5000/mapping')
@@ -46,8 +46,7 @@ function App() {
   const [products, setProducts] = useState<TProduct[]>([]);
   // checkboxes handled via state obj e.g., {1: false, 2: true}
   const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
-
-  // use mappingContext hook
+  // mappingContext hook
   const mappingData = useContext(MappingContext);
 
 
@@ -55,7 +54,7 @@ function App() {
   const handleOnCheck = (e: React.FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     const isChecked = checkboxes[value];
-    console.log(value)
+
     setCheckboxes(prevState => ({
       ...prevState,
       [value]: !isChecked
@@ -77,10 +76,19 @@ function App() {
         .then(response => response.json());
       setResources(newResources);
     }
-
     fetchProducts();
     fetchResources();
   }, []);
+
+  /**
+   * Filter products using some() to find at least one product
+   * where the checkbox[raw_resource_id] == true and the 
+   * refined_resouce_id from mapping matches the product refined_resource_id
+   */
+  const filteredProducts = products.filter(product =>
+    mappingData.some(mapping => checkboxes[mapping.raw_resource_id]
+      && mapping.refined_resource_id === product.refined_resource_id)
+  );
 
   return <div className="App">
     <h3>Select resources</h3>
@@ -106,11 +114,9 @@ function App() {
     </ul>
     <div className='refined-resources'>
       <ul className='refined-resources-list'>
-        {products.map((product) => {
-          return (
-            <li key={product.refined_resource_id}>{product.name}</li>
-          )
-        })}
+        {filteredProducts.map(product => (
+          <li key={product.refined_resource_id}>{product.name}</li>
+        ))}
       </ul>
     </div>
   </div>
@@ -118,8 +124,8 @@ function App() {
 
 export default function WrappedApp() {
   return (
-    // <MappingProvider>
-    <App />
-    // </MappingProvider>
+    <MappingProvider>
+      <App />
+    </MappingProvider>
   )
 }
