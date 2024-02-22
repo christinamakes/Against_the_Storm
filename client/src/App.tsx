@@ -41,7 +41,7 @@ const MappingProvider: React.FC = ({ children }) => {
 
 
 
-function App() {
+const App = () => {
   const [resources, setResources] = useState<TResouce[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
   // checkboxes handled via state obj e.g., {1: false, 2: true}
@@ -59,8 +59,6 @@ function App() {
       ...prevState,
       [value]: !isChecked
     }))
-    // update products based on resource selection
-    // updateCheckboxSelection()
   };
 
   // GET all resources when mount
@@ -92,32 +90,34 @@ function App() {
 
   return <div className="App">
     <h3>Select resources</h3>
-    <ul className="resources-list">
-      {/* create all resource checkboxes */}
-      {resources.map((resource) => {
-        return (
-          <li key={resource.raw_resource_id}>
-            <input
-              type='checkbox'
-              id={resource.raw_resource_id}
-              name={resource.name}
-              key={resource.raw_resource_id}
-              value={resource.raw_resource_id}
-              checked={checkboxes[resource.raw_resource_id] || false}
-              onChange={handleOnCheck}
-            />
-            <label htmlFor={resource.raw_resource_id}>{resource.name}</label>
-          </li>
-        )
-      })
-      }
-    </ul>
-    <div className='refined-resources'>
-      <ul className='refined-resources-list'>
-        {filteredProducts.map(product => (
-          <li key={product.refined_resource_id}>{product.name}</li>
-        ))}
+    <div className='products-and-resources'>
+      <ul className="resources-list">
+        {/* create all resource checkboxes */}
+        {resources.map((resource) => {
+          return (
+            <li key={resource.raw_resource_id}>
+              <input
+                type='checkbox'
+                id={resource.raw_resource_id}
+                name={resource.name}
+                key={resource.raw_resource_id}
+                value={resource.raw_resource_id}
+                checked={checkboxes[resource.raw_resource_id] || false}
+                onChange={handleOnCheck}
+              />
+              <label htmlFor={resource.raw_resource_id}>{resource.name}</label>
+            </li>
+          )
+        })
+        }
       </ul>
+      <div className='refined-resources'>
+        <ul className='refined-resources-list'>
+          {filteredProducts.map(product => (
+            <li key={product.refined_resource_id}>{product.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   </div>
 }
