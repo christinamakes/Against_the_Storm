@@ -91,7 +91,8 @@ const App = () => {
       <div className='refined-resources'>
         <ul className='refined-resources-list'>
           {products.map(product => (
-            <li key={product.refined_resource_id} className={filteredProducts.includes(product) ? 'filtered-product' : ''}>
+            <li key={product.refined_resource_id}
+              className={filteredProducts.length === 0 ? 'product' : filteredProducts.includes(product) ? 'filtered-product' : 'not-filtered-product'}>
               {product.name}
             </li>
           ))}

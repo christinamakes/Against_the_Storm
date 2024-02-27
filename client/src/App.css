@@ -14,7 +14,15 @@
 } */
 
 .filtered-product {
-  color: red
+  opacity: 100%;
+}
+
+.not-filtered-product {
+  opacity: 25%;
+}
+
+.product {
+  opacity: 100%;
 }
 
 .resources-list {
