@@ -77,7 +77,12 @@ const App = () => {
   }, []);
 
   const filteredProducts = products.filter(product =>
-    selectedResources.includes(product.refined_resource_id)
+    mappingData.some(data =>
+      selectedResources.some(resource =>
+        resource.raw_resource_id === data.raw_resource_id &&
+        product.refined_resource_id === data.refined_resource_id
+      )
+    )
   );
 
   return <div className="App">
