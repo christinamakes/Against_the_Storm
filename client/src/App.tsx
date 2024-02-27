@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext, useContext } from 'react'
 import './App.css'
+import Multiselect from './components/Multiselect'
 
 type TResouce = {
   raw_resource_id: string
@@ -43,23 +44,25 @@ const MappingProvider: React.FC = ({ children }) => {
 
 const App = () => {
   const [resources, setResources] = useState<TResouce[]>([]);
+  const [transformedResources, setTransformedResources] = useState<TResouce[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
   // checkboxes handled via state obj e.g., {1: false, 2: true}
-  const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
+  // const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
+  const [selectedResources, setSelectedResources] = useState([])
   // mappingContext hook
   const mappingData = useContext(MappingContext);
 
 
   // on interaction with checkbox negate its current state and update 'checkboxes'
-  const handleOnCheck = (e: React.FormEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
-    const isChecked = checkboxes[value];
+  // const handleOnCheck = (e: React.FormEvent<HTMLInputElement>) => {
+  //   const { value } = e.currentTarget;
+  //   const isChecked = checkboxes[value];
 
-    setCheckboxes(prevState => ({
-      ...prevState,
-      [value]: !isChecked
-    }))
-  };
+  //   setCheckboxes(prevState => ({
+  //     ...prevState,
+  //     [value]: !isChecked
+  //   }))
+  // };
 
   // GET all resources when mount
   useEffect(() => {
@@ -72,6 +75,14 @@ const App = () => {
     async function fetchResources() {
       const newResources = await fetch('http://localhost:5000/resources')
         .then(response => response.json());
+      const transformedResources = newResources.map(resource => {
+        return {
+          value: resource.name,
+          label: resource.name,
+          raw_resource_id: resource.raw_resource_id
+        };
+      });
+      setTransformedResources(transformedResources)
       setResources(newResources);
     }
     fetchProducts();
@@ -83,16 +94,16 @@ const App = () => {
    * where the checkbox[raw_resource_id] == true and the 
    * refined_resouce_id from mapping matches the product refined_resource_id
    */
-  const filteredProducts = products.filter(product =>
-    mappingData.some(mapping => checkboxes[mapping.raw_resource_id]
-      && mapping.refined_resource_id === product.refined_resource_id)
-  );
+  // const filteredProducts = products.filter(product =>
+  //   mappingData.some(mapping => selectedResources[raw_resource_id] === mapping.raw_resource_id &&
+  //     mapping.refined_resource_id === product.refined_resource_id)
+  // );
+
 
   return <div className="App">
     <h3>Select resources</h3>
     <div className='products-and-resources'>
-      <ul className="resources-list">
-        {/* create all resource checkboxes */}
+      {/* <ul className="resources-list">
         {resources.map((resource) => {
           return (
             <li key={resource.raw_resource_id}>
@@ -110,7 +121,8 @@ const App = () => {
           )
         })
         }
-      </ul>
+      </ul> */}
+      <Multiselect options={transformedResources} defaultValue={selectedResources} onChange={setSelectedResources} />
       <div className='refined-resources'>
         <ul className='refined-resources-list'>
           {filteredProducts.map(product => (
@@ -119,7 +131,7 @@ const App = () => {
         </ul>
       </div>
     </div>
-  </div>
+  </div >
 }
 
 export default function WrappedApp() {
