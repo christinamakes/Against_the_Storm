@@ -46,23 +46,10 @@ const App = () => {
   const [resources, setResources] = useState<TResouce[]>([]);
   const [transformedResources, setTransformedResources] = useState<TResouce[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
-  // checkboxes handled via state obj e.g., {1: false, 2: true}
-  // const [checkboxes, setCheckboxes] = useState<{ [key: string]: boolean }>({});
   const [selectedResources, setSelectedResources] = useState([])
   // mappingContext hook
   const mappingData = useContext(MappingContext);
 
-
-  // on interaction with checkbox negate its current state and update 'checkboxes'
-  // const handleOnCheck = (e: React.FormEvent<HTMLInputElement>) => {
-  //   const { value } = e.currentTarget;
-  //   const isChecked = checkboxes[value];
-
-  //   setCheckboxes(prevState => ({
-  //     ...prevState,
-  //     [value]: !isChecked
-  //   }))
-  // };
 
   // GET all resources when mount
   useEffect(() => {
@@ -89,39 +76,13 @@ const App = () => {
     fetchResources();
   }, []);
 
-  /**
-   * Filter products using some() to find at least one product
-   * where the checkbox[raw_resource_id] == true and the 
-   * refined_resouce_id from mapping matches the product refined_resource_id
-   */
-  // const filteredProducts = products.filter(product =>
-  //   mappingData.some(mapping => selectedResources[raw_resource_id] === mapping.raw_resource_id &&
-  //     mapping.refined_resource_id === product.refined_resource_id)
-  // );
-
+  const filteredProducts = products.filter(product =>
+    selectedResources.includes(product.refined_resource_id)
+  );
 
   return <div className="App">
     <h3>Select resources</h3>
     <div className='products-and-resources'>
-      {/* <ul className="resources-list">
-        {resources.map((resource) => {
-          return (
-            <li key={resource.raw_resource_id}>
-              <input
-                type='checkbox'
-                id={resource.raw_resource_id}
-                name={resource.name}
-                key={resource.raw_resource_id}
-                value={resource.raw_resource_id}
-                checked={checkboxes[resource.raw_resource_id] || false}
-                onChange={handleOnCheck}
-              />
-              <label htmlFor={resource.raw_resource_id}>{resource.name}</label>
-            </li>
-          )
-        })
-        }
-      </ul> */}
       <Multiselect options={transformedResources} defaultValue={selectedResources} onChange={setSelectedResources} />
       <div className='refined-resources'>
         <ul className='refined-resources-list'>
