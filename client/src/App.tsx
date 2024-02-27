@@ -41,7 +41,6 @@ const MappingProvider: React.FC = ({ children }) => {
 };
 
 
-
 const App = () => {
   const [resources, setResources] = useState<TResouce[]>([]);
   const [transformedResources, setTransformedResources] = useState<TResouce[]>([]);
@@ -91,8 +90,10 @@ const App = () => {
       <Multiselect options={transformedResources} defaultValue={selectedResources} onChange={setSelectedResources} />
       <div className='refined-resources'>
         <ul className='refined-resources-list'>
-          {filteredProducts.map(product => (
-            <li key={product.refined_resource_id}>{product.name}</li>
+          {products.map(product => (
+            <li key={product.refined_resource_id} className={filteredProducts.includes(product) ? 'filtered-product' : ''}>
+              {product.name}
+            </li>
           ))}
         </ul>
       </div>
