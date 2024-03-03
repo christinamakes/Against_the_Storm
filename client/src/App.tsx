@@ -2,7 +2,7 @@ import { useEffect, useState, createContext, useContext } from 'react'
 import './App.css'
 import Multiselect from './components/Multiselect'
 
-type TResouce = {
+type TResource = {
   raw_resource_id: string
   name: string,
   description: string,
@@ -20,11 +20,15 @@ type TMapping = {
   quantity_required: string
 }
 
+interface Props {
+  children: React.ReactNode
+}
+
 // create context for mapping data
 const MappingContext = createContext<TMapping[]>([]);
 
 // create provider; React.FC = functional component
-const MappingProvider: React.FC = ({ children }) => {
+const MappingProvider = ({ children }: Props) => {
   const [mappingData, setMappingData] = useState<TMapping[]>([]);
 
   // fetch mapping on mount
@@ -42,8 +46,7 @@ const MappingProvider: React.FC = ({ children }) => {
 
 
 const App = () => {
-  const [resources, setResources] = useState<TResouce[]>([]);
-  const [transformedResources, setTransformedResources] = useState<TResouce[]>([]);
+  const [transformedResources, setTransformedResources] = useState<TResource[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
   const [selectedResources, setSelectedResources] = useState([])
   // mappingContext hook
@@ -61,7 +64,7 @@ const App = () => {
     async function fetchResources() {
       const newResources = await fetch('http://localhost:5000/resources')
         .then(response => response.json());
-      const transformedResources = newResources.map(resource => {
+      const transformedResources = newResources.map((resource: { name: string; raw_resource_id: string }) => {
         return {
           value: resource.name,
           label: resource.name,
@@ -69,11 +72,11 @@ const App = () => {
         };
       });
       setTransformedResources(transformedResources)
-      setResources(newResources);
     }
     fetchProducts();
     fetchResources();
   }, []);
+
 
   const filteredProducts = products.filter(product =>
     mappingData.some(data =>

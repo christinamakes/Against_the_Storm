@@ -1,19 +1,18 @@
-import React from 'react'
 import Select from 'react-select'
 
 const customStyles = {
-    option: (defaultStyles, state) => ({
+    option: (defaultStyles: any, state: any) => ({
         ...defaultStyles,
         color: state.isFocused ? "white" : "grey",
         backgroundColor: state.isFocused ? "#a0a0a0" : "#212529",
     }),
 
 
-    control: (defaultStyles) => ({
+    control: (defaultStyles: any) => ({
         ...defaultStyles,
         backgroundColor: "#212529",
     }),
-    singleValue: (defaultStyles) => ({ ...defaultStyles, color: "#fff" }),
+    singleValue: (defaultStyles: any) => ({ ...defaultStyles, color: "#fff" }),
 };
 
 const ResourceMultiselect = (props: any) => (
