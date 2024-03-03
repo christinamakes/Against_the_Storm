@@ -18,7 +18,8 @@ app.get('/resources', async (req: Request, res: Response) => {
     try {
         const { data, error } = await supabase
             .from('raw_resources')
-            .select('*');
+            .select('*')
+            .order('name', { ascending: true });
 
         if (error) {
             throw error;
@@ -33,7 +34,8 @@ app.get('/products', async (req: Request, res: Response) => {
     try {
         const { data, error } = await supabase
             .from('refined_resources')
-            .select('*');
+            .select('*')
+            .order('name', { ascending: true });
 
         if (error) {
             throw error;
