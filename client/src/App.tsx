@@ -35,7 +35,7 @@ const MappingProvider = ({ children }: TProps) => {
   // fetch mapping on mount
   useEffect(() => {
     async function fetchMapping() {
-      const newMapping = await fetch('http://localhost:5000/mapping')
+      const newMapping = await fetch(`${import.meta.env.VITE_SERVER_URL}/mapping`)
         .then(response => response.json());
       setMappingData(newMapping)
     }
@@ -57,13 +57,13 @@ const App = () => {
   // GET all resources when mount
   useEffect(() => {
     async function fetchProducts() {
-      const newProducts = await fetch('http://localhost:5000/products')
+      const newProducts = await fetch(`${import.meta.env.VITE_SERVER_URL}/products`)
         .then(response => response.json());
       setProducts(newProducts);
     }
 
     async function fetchResources() {
-      const newResources = await fetch('http://localhost:5000/resources')
+      const newResources = await fetch(`${import.meta.env.VITE_SERVER_URL}/resources`)
         .then(response => response.json());
       const transformedResources = newResources.map((resource: { name: string; raw_resource_id: string }) => {
         return {
