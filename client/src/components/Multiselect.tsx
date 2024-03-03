@@ -4,14 +4,9 @@ const customStyles = {
     option: (defaultStyles: any, state: any) => ({
         ...defaultStyles,
         color: state.isFocused ? "white" : "grey",
-        backgroundColor: state.isFocused ? "#a0a0a0" : "#212529",
+        backgroundColor: state.isFocused ? "#a0a0a0" : "white",
     }),
 
-
-    control: (defaultStyles: any) => ({
-        ...defaultStyles,
-        backgroundColor: "#212529",
-    }),
     singleValue: (defaultStyles: any) => ({ ...defaultStyles, color: "#fff" }),
 };
 
