@@ -63,5 +63,4 @@ app.get('/mapping', async (req: Request, res: Response) => {
 
 // beam me up, scotty
 app.listen(PORT, () => {
-    console.log(`hi from http://localhost:${PORT}`);
 });
