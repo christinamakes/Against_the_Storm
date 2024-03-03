@@ -2,6 +2,7 @@ import { useEffect, useState, createContext, useContext } from 'react'
 import './App.css'
 import Multiselect from './components/Multiselect'
 
+// declare types
 type TResource = {
   raw_resource_id: string
   name: string,
@@ -20,7 +21,7 @@ type TMapping = {
   quantity_required: string
 }
 
-interface Props {
+type TProps = {
   children: React.ReactNode
 }
 
@@ -28,7 +29,7 @@ interface Props {
 const MappingContext = createContext<TMapping[]>([]);
 
 // create provider; React.FC = functional component
-const MappingProvider = ({ children }: Props) => {
+const MappingProvider = ({ children }: TProps) => {
   const [mappingData, setMappingData] = useState<TMapping[]>([]);
 
   // fetch mapping on mount
@@ -48,7 +49,7 @@ const MappingProvider = ({ children }: Props) => {
 const App = () => {
   const [transformedResources, setTransformedResources] = useState<TResource[]>([]);
   const [products, setProducts] = useState<TProduct[]>([]);
-  const [selectedResources, setSelectedResources] = useState([])
+  const [selectedResources, setSelectedResources] = useState<TResource[]>([])
   // mappingContext hook
   const mappingData = useContext(MappingContext);
 
@@ -77,11 +78,10 @@ const App = () => {
     fetchResources();
   }, []);
 
-
   const filteredProducts = products.filter(product =>
     mappingData.some(data =>
-      selectedResources.some(resource =>
-        resource.raw_resource_id === data.raw_resource_id &&
+      selectedResources.some(Resource =>
+        Resource.raw_resource_id === data.raw_resource_id &&
         product.refined_resource_id === data.refined_resource_id
       )
     )
