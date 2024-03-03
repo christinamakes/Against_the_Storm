@@ -9,10 +9,14 @@ app.use(cors());
 app.use(express.json())
 const PORT = process.env.PORT || 3000;
 
-const supabaseUrl = 'https://wnbtubmfobgomfgfjikb.supabase.co';
+const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY!;
 const supabase = createClient<Database>(
     supabaseUrl, supabaseKey);
+
+app.get('/', (req: Request, res: Response) => {
+    return res.send('Hello!')
+})
 
 app.get('/resources', async (req: Request, res: Response) => {
     try {

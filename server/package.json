@@ -10,6 +10,11 @@
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -27,10 +32,5 @@
     "dotenv": "^16.4.4",
     "nodemon": "^3.0.3",
     "ts-node": "^10.9.2"
-  },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ]
+  }
 }
