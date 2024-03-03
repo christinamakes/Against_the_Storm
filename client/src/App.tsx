@@ -88,7 +88,7 @@ const App = () => {
   );
 
   return <div className="App">
-    <h3>Select resources</h3>
+    <h3>Select raw resources</h3>
     <div className='products-and-resources'>
       <Multiselect options={transformedResources} defaultValue={selectedResources} onChange={setSelectedResources} />
       <div className='refined-resources'>
