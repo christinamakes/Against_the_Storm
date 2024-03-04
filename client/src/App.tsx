@@ -1,4 +1,5 @@
 import { useEffect, useState, createContext, useContext } from 'react'
+import { Analytics } from "@vercel/analytics/react"
 import './App.css'
 import Multiselect from './components/Multiselect'
 
@@ -88,6 +89,7 @@ const App = () => {
   );
 
   return <div className="App">
+    <Analytics />
     <h3>Select raw resources</h3>
     <div className='products-and-resources'>
       <Multiselect options={transformedResources} defaultValue={selectedResources} onChange={setSelectedResources} />
