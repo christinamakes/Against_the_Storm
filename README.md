@@ -1,5 +1,7 @@
 # Against the Storm Resource Companion
 
+## https://against-the-storm.vercel.app/
+
 ## Game: Against the Storm by Hooded Horse
 
 Agains the Storm Resource Companion is a lightweight tool for previewing producable goods based on raw resources.
